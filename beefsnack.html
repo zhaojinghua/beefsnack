@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<style>
+    table{
+        margin: 0 auto;
+    }
+    label, input{
+        font-size: 42px;
+    }
+    input{
+        width: 280px;
+    }
+    .numberPad, .clear, .delete{
+        background-color:burlywood;
+        width: 240px;
+        height: 120px;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 68px;    
+    }
+    h1{
+        text-align: center;
+        font-size: 68px;
+    }
+    div#showSteps{
+        width: 600px;
+        margin: 40px auto;
+        font-size: 68px;
+    }
+    body{
+        width: 900px;
+        margin: 0 auto;
+        
+        
+    }
+</style>    
+</head>
+<body>
+    <h1>牛肉干订单计算器</h1>
+    <table>
+        <tr>
+            <td>
+                <label>Number for Customer:</label>
+            </td>
+            <td> 
+                <input type="text" pattern="[0-9]*" id="TotalNumber" placeholder="less than 2000"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Number of Pay Order:</label>
+            </td>
+            <td>
+                <input type="text" id="NumberToBuy" />
+            </td>
+        </tr>
+    </table>
+    <div style="height:20px;"></div>
+    <table>
+
+        
+        <tr>
+            <td class="numberPad">1</td>
+            <td class="numberPad">2</td>
+            <td class="numberPad">3</td>
+        </tr>
+        <tr>
+            <td class="numberPad">4</td>
+            <td class="numberPad">5</td>
+            <td class="numberPad">6</td>
+        </tr>
+        <tr>
+            <td class="numberPad">7</td>
+            <td class="numberPad">8</td>
+            <td class="numberPad">9</td>
+        </tr>
+        <tr>
+            <td class="clear">Clear</td>
+            <td class="numberPad">0</td>
+            <td class="delete">Delete</td>
+        </tr>        
+    </table>
+    
+    <div id="showSteps"></div>
+   
+    </br>
+    
+    
+    <script>
+        var tempCounter = 0;
+        var tempTotal = 0;
+        var tempSign = " = ";
+        $("#TotalNumber").change(function(){            
+            $("#NumberToBuy").val(calculateNumber($("#TotalNumber").val()));
+        });
+        
+        function calculateNumber(total){
+            var result = 0;
+            tempTotal = total;
+            console.log(total%20);
+            for (var i=1; i<=2000; i++){
+                if(Math.floor(i/20) + i == total){
+                    result = i;
+                    tempCounter = i;
+                    tempSign = " = ";
+                }
+            }
+            if(result == 0){
+                total++;
+                for (var i=1; i<=2000; i++){
+                if(Math.floor(i/20) + i == total){
+                    result = i + " 多出一包";
+                    tempCounter = i;
+                    tempSign = " < "
+                }
+              } 
+            }
+           
+            return result;
+        }
+        $("td.numberPad").click(function(){
+            console.log($("#TotalNumber").val() + this.innerHTML);
+            $("#TotalNumber").val($("#TotalNumber").val() + this.innerHTML);
+            $("#NumberToBuy").val(calculateNumber($("#TotalNumber").val()));
+
+             $("#showSteps").text(tempTotal + tempSign + tempCounter + " + " + Math.floor(tempCounter/20));
+        });
+        $("td.clear").click(function(){
+            $("#TotalNumber").val("");
+             $("#NumberToBuy").val("");
+            $("#showSteps").text("");
+        });
+        $("td.delete").click(function(){
+            var result = $("#TotalNumber").val();
+            $("#TotalNumber").val(result.substring(0, result.length-1));
+        $("#NumberToBuy").val(calculateNumber($("#TotalNumber").val()));
+        });        
+    </script>
+
+</body>
+
+</html>
